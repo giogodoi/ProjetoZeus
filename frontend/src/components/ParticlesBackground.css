@@ -1,0 +1,130 @@
+.animated-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+  background-color: #000000;
+}
+
+.rectangle-1,
+.rectangle-2,
+.rectangle-transparent-1,
+.rectangle-transparent-2 {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.1);
+  transform: rotate(-45deg);
+}
+
+.rectangle-1 {
+  width: 400px;
+  height: 400px;
+  top: -50px;
+  left: -100px;
+  animation: float 6s infinite;
+}
+
+.rectangle-2 {
+  width: 300px;
+  height: 300px;
+  top: 50%;
+  right: -50px;
+  animation: float 8s infinite;
+}
+
+.rectangle-transparent-1 {
+  width: 500px;
+  height: 500px;
+  bottom: -100px;
+  left: 30%;
+  background: rgba(255, 255, 255, 0.05);
+  animation: float 10s infinite;
+}
+
+.rectangle-transparent-2 {
+  width: 300px;
+  height: 300px;
+  top: 20%;
+  right: 30%;
+  background: rgba(255, 255, 255, 0.05);
+  animation: float 7s infinite;
+}
+
+.circle-1,
+.circle-2,
+.circle-3 {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.circle-1 {
+  width: 200px;
+  height: 200px;
+  top: 20%;
+  left: 20%;
+  animation: float 5s infinite;
+}
+
+.circle-2 {
+  width: 150px;
+  height: 150px;
+  bottom: 20%;
+  right: 20%;
+  animation: float 9s infinite;
+}
+
+.circle-3 {
+  width: 100px;
+  height: 100px;
+  top: 50%;
+  left: 50%;
+  animation: float 7s infinite;
+}
+
+.triangle {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-bottom: 86.6px solid rgba(255, 255, 255, 0.1);
+  animation: float 8s infinite;
+}
+
+.triangle-1 {
+  top: 10%;
+  left: 10%;
+}
+
+.triangle-2 {
+  top: 20%;
+  right: 15%;
+  transform: rotate(45deg);
+}
+
+.triangle-3 {
+  bottom: 15%;
+  left: 15%;
+  transform: rotate(-45deg);
+}
+
+.triangle-4 {
+  bottom: 20%;
+  right: 10%;
+  transform: rotate(180deg);
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(-45deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(-45deg);
+  }
+  100% {
+    transform: translateY(0) rotate(-45deg);
+  }
+}

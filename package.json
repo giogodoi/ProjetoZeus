@@ -1,0 +1,19 @@
+{
+  "name": "zeus-management-system",
+  "version": "1.0.0",
+  "description": "Internal management system for Comp Júnior",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "start:backend": "cd backend && npm run start",
+    "start:frontend": "cd frontend && npm run start",
+    "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  }
+}

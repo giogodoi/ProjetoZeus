@@ -1,39 +1,40 @@
-# Zeus Management System
+# Sistema de Gestão Interna - Zeus⚡
 
-Internal management system developed for Comp Júnior to manage members, penalties, equipment, projects, and clients.
+Este Sistema tem como objetivo somente o aprendizado, sinta-se a vontade para utiliza-lo se desejar. :)
+Sistema de Gestão Interno feito para aprendizado na CompJunior. :)
 
-## Features
+## Funções
 
-- Member Registration and Management
-- Authentication System
-- Project Budget Management
-- Role-based Access Control
+- Registro e gestão de membros.
+- Sistema de Autenticação.
+- Sistema de Orçamentos para projeto.
+- Acesso a funções baseado no cargo deferido.
 
-## Tech Stack
+## Bibliotecas Usadas
 
-- Frontend: React with Material-UI
+- Frontend: React com Material-UI
 - Backend: Node.js + Express
 - Database: PostgreSQL
 - Authentication: JWT
 
-## Getting Started
+## Para Utilizar
 
-1. Clone the repository
+1. Clone o repositório
 2. Install dependencies:
    ```bash
    npm run install:all
    ```
-3. Set up environment variables (see .env.example files in frontend and backend directories)
-4. Start the development servers:
+3. Configure variáveis ​​de ambiente (consulte os arquivos .env.example nos diretórios frontend e backend)
+4. Inicie os servidores de desenvolvimento (tanto na pasta backend quanto frontend):
    ```bash
    npm start
    ```
 
-## Project Structure
+## Estrutura do Projeto
 
 ```
 zeus-management-system/
 ├── frontend/          # React frontend application
 ├── backend/           # Node.js + Express backend
-└── docs/             # Project documentation
+└── docs/             # Documentação
 ```

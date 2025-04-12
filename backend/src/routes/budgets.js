@@ -16,6 +16,7 @@ router.get('/', auth, async (req, res) => {
     });
     res.json(budgets);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Error fetching budgets' });
   }
 });
@@ -35,6 +36,7 @@ router.get('/:id', auth, async (req, res) => {
     }
     res.json(budget);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Error fetching budget' });
   }
 });
@@ -43,12 +45,12 @@ router.get('/:id', auth, async (req, res) => {
 router.post('/', [
   auth,
   isAdmin,
-  body('projectDescription').notEmpty(),
-  body('clientName').notEmpty(),
-  body('responsibleId').notEmpty(),
-  body('estimatedValue').isNumeric(),
-  body('expectedCosts').isNumeric(),
-  body('status').isIn(['under_review', 'approved', 'rejected'])
+  body('projectDescription').notEmpty().withMessage('Project description is required'),
+  body('clientName').notEmpty().withMessage('Client name is required'),
+  body('responsibleId').notEmpty().withMessage('Responsible ID is required'),
+  body('estimatedValue').isNumeric().withMessage('Estimated value must be a number'),
+  body('expectedCosts').isNumeric().withMessage('Expected costs must be a number'),
+  body('status').isIn(['under_review', 'approved', 'rejected']).withMessage('Invalid status')
 ], async (req, res) => {
   try {
     const errors = validationResult(req);
@@ -56,18 +58,21 @@ router.post('/', [
       return res.status(400).json({ errors: errors.array() });
     }
 
+    // Check if the responsible user exists
     const responsible = await User.findByPk(req.body.responsibleId);
     if (!responsible) {
       return res.status(400).json({ error: 'Responsible member not found' });
     }
 
+    // Create the budget
     const budget = await Budget.create({
       ...req.body,
-      createdBy: req.user.id
+      createdBy: req.user.id // Assuming the user ID is available in the token
     });
 
     res.status(201).json(budget);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Error creating budget' });
   }
 });
@@ -76,12 +81,12 @@ router.post('/', [
 router.put('/:id', [
   auth,
   isAdmin,
-  body('projectDescription').optional().notEmpty(),
-  body('clientName').optional().notEmpty(),
-  body('responsibleId').optional().notEmpty(),
-  body('estimatedValue').optional().isNumeric(),
-  body('expectedCosts').optional().isNumeric(),
-  body('status').optional().isIn(['under_review', 'approved', 'rejected'])
+  body('projectDescription').optional().notEmpty().withMessage('Project description cannot be empty'),
+  body('clientName').optional().notEmpty().withMessage('Client name cannot be empty'),
+  body('responsibleId').optional().notEmpty().withMessage('Responsible ID cannot be empty'),
+  body('estimatedValue').optional().isNumeric().withMessage('Estimated value must be a number'),
+  body('expectedCosts').optional().isNumeric().withMessage('Expected costs must be a number'),
+  body('status').optional().isIn(['under_review', 'approved', 'rejected']).withMessage('Invalid status')
 ], async (req, res) => {
   try {
     const errors = validationResult(req);
@@ -104,6 +109,7 @@ router.put('/:id', [
     await budget.update(req.body);
     res.json(budget);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Error updating budget' });
   }
 });
@@ -119,6 +125,7 @@ router.delete('/:id', [auth, isAdmin], async (req, res) => {
     await budget.destroy();
     res.json({ message: 'Budget deleted successfully' });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Error deleting budget' });
   }
 });

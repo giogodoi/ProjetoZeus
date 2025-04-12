@@ -33,7 +33,7 @@ const validationSchema = yup.object({
   gender: yup.string().required('Gender is required'),
   admissionDate: yup
     .date()
-    .max(new Date(), 'Admission date cannot be in the future')
+    .max(new Date(), 'A admissão não pode ser futura.')
     .required('Admission date is required'),
   skills: yup.string(),
 });

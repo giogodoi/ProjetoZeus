@@ -15,8 +15,11 @@ import api from '../services/api';
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const [adminCount, setAdminCount] = useState(null);
-  const [projectData, setProjectData] = useState(null);
+  const [adminCount, setAdminCount] = useState(0); // Inicializado como 0
+  const [projectData, setProjectData] = useState({
+    totalEstimatedValue: 0,
+    totalExpectedCosts: 0,
+  }); // Inicializado como um objeto vazio com valores padrão
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -27,8 +30,8 @@ const Dashboard = () => {
           api.get('/dashboard/project-management'),
         ]);
 
-        setAdminCount(employeeRes.data.adminCount);
-        setProjectData(projectRes.data);
+        setAdminCount(employeeRes.data.adminCount || 0);
+        setProjectData(projectRes.data || { totalEstimatedValue: 0, totalExpectedCosts: 0 });
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
       } finally {
@@ -47,12 +50,10 @@ const Dashboard = () => {
     );
   }
 
-  const chartData = projectData
-    ? [
-        { name: 'Estimated Sales', value: projectData.totalEstimatedValue },
-        { name: 'Estimated Costs', value: projectData.totalExpectedCosts },
-      ]
-    : [];
+  const chartData = [
+    { name: 'Estimated Sales', value: projectData.totalEstimatedValue },
+    { name: 'Estimated Costs', value: projectData.totalExpectedCosts },
+  ];
 
   const COLORS = ['#0088FE', '#FF8042'];
 
@@ -103,7 +104,7 @@ const Dashboard = () => {
           <Card>
             <CardHeader title="Gestão de Projetos" />
             <CardContent>
-              {projectData ? (
+              {chartData.some((data) => data.value > 0) ? (
                 <PieChart width={400} height={300}>
                   <Pie
                     data={chartData}

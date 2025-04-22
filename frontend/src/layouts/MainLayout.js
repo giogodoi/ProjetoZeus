@@ -104,7 +104,7 @@ const MainLayout = () => {
               style={{ height: 40, marginRight: 16 }}
             />
             <Typography variant="h6" noWrap component="div">
-              Zeus Management System
+              Zeus - Sistema de Gestão Interna
             </Typography>
           </Box>
           <Button

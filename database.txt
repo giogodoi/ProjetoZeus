@@ -1,0 +1,73 @@
+-- Criação do banco de dados
+CREATE DATABASE testegestaojs;
+
+-- Conecte-se ao banco de dados
+\c testegestaojs;
+
+-- Habilitar extensão para UUIDs
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- Tabela de Usuários
+CREATE TABLE "Users" (
+    "id" UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    "fullName" VARCHAR(255) NOT NULL,
+    "dateOfBirth" DATE NOT NULL,
+    "email" VARCHAR(255) UNIQUE NOT NULL,
+    "password" VARCHAR(255) NOT NULL,
+    "role" VARCHAR(10) CHECK ("role" IN ('admin', 'member')) DEFAULT 'member',
+    "phoneNumber" VARCHAR(20) NOT NULL,
+    "gender" VARCHAR(20) CHECK ("gender" IN ('male', 'female', 'other', 'prefer_not_to_say')) NOT NULL,
+    "photoUrl" VARCHAR(255),
+    "admissionDate" DATE NOT NULL,
+    "skills" TEXT[],
+    "isActive" BOOLEAN DEFAULT TRUE,
+    "createdAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    "deletedAt" TIMESTAMP
+);
+
+-- Tabela de Orçamentos
+CREATE TABLE "Budgets" (
+    "id" UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    "budgetNumber" VARCHAR(50) UNIQUE NOT NULL,
+    "projectDescription" TEXT NOT NULL,
+    "clientName" VARCHAR(255) NOT NULL,
+    "responsibleId" UUID NOT NULL REFERENCES "Users" ("id") ON UPDATE CASCADE ON DELETE SET NULL,
+    "estimatedValue" DECIMAL(10, 2) NOT NULL CHECK ("estimatedValue" >= 0),
+    "expectedCosts" DECIMAL(10, 2) NOT NULL CHECK ("expectedCosts" >= 0),
+    "status" VARCHAR(20) CHECK ("status" IN ('under_review', 'approved', 'rejected')) DEFAULT 'under_review',
+    "createdBy" UUID NOT NULL REFERENCES "Users" ("id") ON UPDATE CASCADE ON DELETE SET NULL,
+    "history" JSONB DEFAULT '[]'::jsonb NOT NULL,
+    "createdAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    "deletedAt" TIMESTAMP
+);
+
+-- Índices para melhorar a performance
+CREATE INDEX idx_users_email ON "Users" ("email");
+CREATE INDEX idx_budgets_status ON "Budgets" ("status");
+
+-- Inserir um usuário administrador padrão
+INSERT INTO "Users" (
+    "id",
+    "fullName",
+    "dateOfBirth",
+    "email",
+    "password",
+    "role",
+    "phoneNumber",
+    "gender",
+    "admissionDate",
+    "isActive"
+) VALUES (
+    uuid_generate_v4(),
+    'Admin User',
+    '1990-01-01',
+    'admin@compjunior.com.br',
+    crypt('admin123', gen_salt('bf')), -- Certifique-se de habilitar a extensão pgcrypto para usar crypt()
+    'admin',
+    '+5511999999999',
+    'prefer_not_to_say',
+    CURRENT_DATE,
+    TRUE
+);
